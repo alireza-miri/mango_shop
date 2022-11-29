@@ -9,16 +9,16 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import { useDispatch, useSelector} from "react-redux";
-import { getData } from "../../redux/action";
-import {useNavigate} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/action";
+import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.posts);
   useEffect(() => {
-    dispatch(getData());
+    dispatch(getPosts());
   }, []);
   const navigate = useNavigate();
   return (
@@ -32,13 +32,13 @@ const Home = () => {
       ) : (
         <Container>
           <Row>
-            {data.map((item,index) => {
+            {data.map((item, index) => {
               return (
                 <Col key={item._id}>
                   <Card
-                    style={{ width: "18rem"}}
+                    style={{ width: "18rem" }}
                     className=" hover_card mt-5 "
-                    onClick={()=>navigate(`product/${item._id}`)}
+                    onClick={() => navigate(`product/${item._id}`)}
                   >
                     <Card.Img
                       variant="top"
@@ -50,13 +50,16 @@ const Home = () => {
                     <ListGroup className="list-group-flush">
                       <ListGroup.Item className="mt-2">
                         {!item.countInStock ? (
-                         
-                            <p style={{fontWeight:"bold",fontSize:"17px"}}>Not available in stock</p>
-                         
+                          <p style={{ fontWeight: "bold", fontSize: "17px" }}>
+                            Not available in stock
+                          </p>
                         ) : (
                           <p>
                             Available in stock:
-                            <Badge bg="success" className="m-1"> {item.countInStock}</Badge>
+                            <Badge bg="success" className="m-1">
+                              {" "}
+                              {item.countInStock}
+                            </Badge>
                           </p>
                         )}
                       </ListGroup.Item>

@@ -14,3 +14,18 @@ export const posts = (
       return state;
   }
 };
+export const OnePost = (
+  state = { data: [], loading: false, error: "" },
+  { type, payload }
+) => {
+  switch (type) {
+    case loading:
+      return payload;
+    case success:
+      return payload;
+    case failed:
+      return payload;
+    default:
+      return state;
+  }
+};

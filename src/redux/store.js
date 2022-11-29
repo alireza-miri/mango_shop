@@ -4,8 +4,8 @@ import {
   applyMiddleware,
 } from "redux";
 import thunk from "redux-thunk";
-import { posts } from "./reducer";
-const reducers = combineReducers({ posts });
+import { posts,OnePost } from "./reducer";
+const reducers = combineReducers({ posts ,OnePost});
 const middleWare = [thunk];
 
 const initialState = {};

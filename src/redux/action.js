@@ -1,7 +1,7 @@
 import { loading, success, failed } from "../constansts";
 import axios from "axios";
 
-export const getData = () => async (dispatch, getState) => {
+export const getPosts = () => async (dispatch, getState) => {
   dispatch({
     type: loading,
     payload: { data: [], loading: true, error: "" },
@@ -12,12 +12,32 @@ export const getData = () => async (dispatch, getState) => {
         type: success,
         payload: { data: [...data], loading: false, error: "" },
       });
-    console.log(data);
+    
   } catch (error) {
     dispatch({
         type: failed,
         payload: { data: [], loading: false, error: error.message },
       });
-    console.log(error.message);
+    
+  }
+};
+export const getOnePost = (productId) => async (dispatch, getState) => {
+  dispatch({
+    type: loading,
+    payload: { data: [], loading: true, error: "" },
+  });
+  try {
+    const {data} = await axios.get(`http://kzico.runflare.run/product/${productId}`);
+    dispatch({
+        type: success,
+        payload: { data: [data], loading: false, error: "" },
+      });
+    
+  } catch (error) {
+    dispatch({
+        type: failed,
+        payload: { data: [], loading: false, error: error.message },
+      });
+    
   }
 };
