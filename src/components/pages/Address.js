@@ -1,3 +1,4 @@
+import { itMatchesOne } from "daisyui/src/lib/postcss-prefixer/utils";
 import React, { useState } from "react";
 import {
   Col,
@@ -7,14 +8,23 @@ import {
   Card,
   Form,
   Navbar,
-  Nav,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { senAddress } from "../../redux/action";
 const Address = () => {
   const navigate = useNavigate();
-  const [username, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [phoneNumer, setPhoneNumer] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [cityTouch, setCityTouch] = useState(false);
+  const [addrestouch, setAddressTouch] = useState(false);
+  const [postalCodetouch, setPostalCodeTouch] = useState(false);
+  const [phoneNumbertouch, setphoneNumberTouch] = useState(false);
+  const dispatch = useDispatch();
+  const { data, error } = useSelector((state) => state.sendAddress);
+
   return (
     <div>
       <Container>
@@ -34,9 +44,9 @@ const Address = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Mango
+                    Address
                   </Navbar.Brand>
-                  <p className=" mb-5">Please enter your login and password!</p>
+
                   <div className="mb-3">
                     <Form>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -44,18 +54,33 @@ const Address = () => {
                         <Form.Control
                           type="text"
                           placeholder="city"
-                          onChange={(e) => setUserName(e.target.value)}
+                          onBlur={(e) => {
+                            setCity(e.target.value);
+                            setCityTouch(true);
+                          }}
                         />
                       </Form.Group>
+                      {city.length < 2 && cityTouch && (
+                        <span style={{ fontWeight: "bold", color: "red" }}>
+                          city must be at least 2 characters
+                        </span>
+                      )}
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">address</Form.Label>
                         <Form.Control
                           type="text"
                           placeholder="address"
-                          onChange={(e) => setEmail(e.target.value)}
+                          onBlur={(e) => {
+                            setAddress(e.target.value);
+                            setAddressTouch(true);
+                          }}
                         />
                       </Form.Group>
-
+                      {address.length < 10 && addrestouch && (
+                        <span style={{ fontWeight: "bold", color: "red" }}>
+                          address must be at least 10 characters
+                        </span>
+                      )}
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
@@ -64,9 +89,17 @@ const Address = () => {
                         <Form.Control
                           type="number"
                           placeholder="postal code"
-                          onChange={(e) => setPassword(e.target.value)}
+                          onBlur={(e) => {
+                            setPostalCode(e.target.value);
+                            setPostalCode(true);
+                          }}
                         />
                       </Form.Group>
+                      {postalCode.length < 2 && postalCodetouch && (
+                        <span style={{ fontWeight: "bold", color: "red" }}>
+                          postalCode must be at least 10 characters
+                        </span>
+                      )}
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
@@ -74,20 +107,35 @@ const Address = () => {
                         <Form.Label>phone number</Form.Label>
                         <Form.Control
                           type="number"
-                          placeholder="Confirmpassword"
+                          placeholder="phone number"
+                          onBlur={(e) => {
+                            setPhoneNumer(e.target.value);
+                          }}
                         />
                       </Form.Group>
+
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicCheckbox"
                       >
                         <p className="small"></p>
                       </Form.Group>
+
                       <div className="d-grid">
                         <Button
                           variant="success"
                           type="button"
-                          onClick={() => navigate("/chekout")}
+                          onClick={() => {
+                            // city.length >= 2 &&
+                            //   address.length >= 9 &&
+                            //   postalCode.length >= 7 &&
+
+                            navigate("/chekout");
+                            window.location.reload();
+                            dispatch(
+                              senAddress(address, city, postalCode, phoneNumer)
+                            );
+                          }}
                         >
                           Next
                         </Button>

@@ -4,11 +4,51 @@ import {
   applyMiddleware,
 } from "redux";
 import thunk from "redux-thunk";
-import { posts,OnePost } from "./reducer";
-const reducers = combineReducers({ posts ,OnePost});
+import {
+  posts,
+  OnePost,
+  login,
+  singup,
+  profile,
+  token,
+  chekLogin,
+  getUser,
+  Changepassword,
+  changeprofile,
+  UploadAvatar,
+  saveOneProduct,
+  sendAddress,
+  orders,
+  OneOrder,
+} from "./reducer";
+const reducers = combineReducers({
+  posts,
+  OnePost,
+  login,
+  singup,
+  profile,
+  token,
+  chekLogin,
+  getUser,
+  Changepassword,
+  changeprofile,
+  UploadAvatar,
+  saveOneProduct,
+  sendAddress,
+  orders,
+  OneOrder,
+});
 const middleWare = [thunk];
-
-const initialState = {};
+const userToken = localStorage.getItem("token");
+const userLogin = localStorage.getItem("login");
+const OneProduct = JSON.parse(localStorage.getItem("product"));
+const user = JSON.parse(localStorage.getItem("getUser"));
+const initialState = {
+  token: userToken,
+  chekLogin: userLogin,
+  getUser: user,
+  saveOneProduct: OneProduct,
+};
 const store = createStore(
   reducers,
   initialState,

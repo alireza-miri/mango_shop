@@ -9,28 +9,34 @@ import {
   Navbar,
   Nav,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { changeprofile } from "../../redux/action";
 import Saidbar from "./Saidbar";
 const ChangeProfile = () => {
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastNam, setLastName] = useState("");
+  const [gender, setGender] = useState("");
+  const [city, setCity] = useState("");
+  const [age, setAge] = useState("");
+  const dispatch = useDispatch();
+  const { data, error } = useSelector((state) => state.changeprofile);
   return (
     <div>
-      
-      
-      <Container style={{marginLeft:"0px" }}>
+      <Container style={{ marginLeft: "0px" }}>
         <Row className="vh-100 d-flex justify-content-center align-items-center">
-          <Col >
-             <Saidbar />
-            </Col>
-         
+          <Col>
+            <Saidbar tab="chprf" />
+          </Col>
+
           <Col md={8} lg={6} xs={12}>
-            
-            <div className="border border-3 border-success "></div>
+            <div className="border border-3 border-success rounded "></div>
             <Card className="shadow-lg p-3 mb-5 bg-body rounded ">
               <Card.Body>
                 <div className="mb-3 mt-md-0">
                   <Navbar.Brand
-                    onClick={() => navigate("/")}
+                    onClick={() => navigate("")}
                     style={{
                       fontWeight: "bold ",
                       color: "green",
@@ -39,59 +45,130 @@ const ChangeProfile = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Mango
+                    ChangeProfile
                   </Navbar.Brand>
-                  <p className=" mb-5">Please enter your login and password!</p>
+
                   <div className="mb-3">
                     <Form>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">
                           First Name
                         </Form.Label>
-                        <Form.Control type="text" placeholder="first name" />
+                        <Form.Control
+                          type="text"
+                          placeholder="first name"
+                          onChange={(e) => setFirstName(e.target.value)}
+                        />
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">
                           Last Name
                         </Form.Label>
-                        <Form.Control type="text" placeholder="last name" />
+                        <Form.Control
+                          type="text"
+                          placeholder="last name"
+                          onChange={(e) => setLastName(e.target.value)}
+                        />
                       </Form.Group>
 
                       <Form.Group
                         className="mb-3"
                         controlId="formBasicPassword"
                       >
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formBasicPassword"
+                        >
+                          <Form.Label>Age</Form.Label>
+                          <Form.Control
+                            type="number"
+                            placeholder="age"
+                            onChange={(e) => setAge(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formBasicPassword"
+                        >
+                          <Form.Label>City</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="city"
+                            onChange={(e) => setCity(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group
+                          className="mb-3"
+                          controlId="formBasicCheckbox"
+                        >
+                          <p className="small"></p>
+                        </Form.Group>
                         <Form.Label>Gender</Form.Label>
-                        <Form.Control type="text" placeholder="gender" />
+                        {["radio"].map((type) => (
+                          <Form key={`inline-${type}`} className="mb-3">
+                            <Form.Check
+                              inline
+                              label="female"
+                              name="group1"
+                              type={type}
+                              id={`inline-${type}-1`}
+                              onClick={() => setGender("female")}
+                            />
+                            <Form.Check
+                              inline
+                              label="male"
+                              name="group1"
+                              type={type}
+                              id={`inline-${type}-2`}
+                              onClick={() => setGender("male")}
+                            />
+                          </Form>
+                        ))}
                       </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formBasicPassword"
-                      >
-                        <Form.Label>Age</Form.Label>
-                        <Form.Control type="number" placeholder="age" />
-                      </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formBasicPassword"
-                      >
-                        <Form.Label>City</Form.Label>
-                        <Form.Control type="text" placeholder="city" />
-                      </Form.Group>
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formBasicCheckbox"
-                      >
-                        <p className="small"></p>
-                      </Form.Group>
+                      {error.map((item) => {
+                        return (
+                          <p
+                            key={item.message}
+                            style={{ color: "red", fontWeight: "bold" }}
+                          >
+                            {item.message}
+                          </p>
+                        );
+                      })}
                       <div className="d-grid">
                         <Button
                           variant="success"
                           type="button"
-                          
+                          onClick={() =>
+                            dispatch(
+                              changeprofile(
+                                firstName,
+                                lastNam,
+                                gender,
+                                city,
+                                age
+                              )
+                            )
+                          }
                         >
                           done
                         </Button>
+                        {data.map((item) => {
+                          return (
+                            <p
+                              key={item.message}
+                              style={{
+                                color: "#018383",
+                                fontWeight: "bold",
+                                fontSize: "25px",
+                                paddingTop: "20px",
+                              }}
+                            >
+                              <img src="https://img.icons8.com/doodle/40/null/checkmark.png" />
+                              Your profile has been successfully updated
+                            </p>
+                          );
+                        })}
                       </div>
                     </Form>
                   </div>

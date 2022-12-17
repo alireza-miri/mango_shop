@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import {
   Badge,
-  Button,
   Card,
   Col,
   Container,
@@ -10,13 +9,14 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts } from "../../redux/action";
+import { getPosts, getProfile } from "../../redux/action";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, data, error } = useSelector((state) => state.posts);
+
   useEffect(() => {
     dispatch(getPosts());
   }, []);
@@ -32,13 +32,13 @@ const Home = () => {
       ) : (
         <Container>
           <Row>
-            {data.map((item, index) => {
+            {data.map((item) => {
               return (
                 <Col key={item._id}>
                   <Card
                     style={{ width: "18rem" }}
                     className=" hover_card mt-5 "
-                    onClick={() => navigate(`product/${item._id}`)}
+                    onClick={() => navigate(`/product/${item._id}`)}
                   >
                     <Card.Img
                       variant="top"
@@ -50,11 +50,11 @@ const Home = () => {
                     <ListGroup className="list-group-flush">
                       <ListGroup.Item className="mt-2">
                         {!item.countInStock ? (
-                          <p style={{ fontWeight: "bold", fontSize: "17px" }}>
+                          <p style={{ fontWeight: "bold" }}>
                             Not available in stock
                           </p>
                         ) : (
-                          <p>
+                          <p style={{ fontWeight: "bold" }}>
                             Available in stock:
                             <Badge bg="success" className="m-1">
                               {" "}
@@ -81,7 +81,7 @@ const Home = () => {
                             color: "black",
                             fontWeight: "bold",
                           }}
-                        />{" "}
+                        />
                         {item.rating}
                       </Card.Text>
                     </Card.Body>

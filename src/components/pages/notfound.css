@@ -1,0 +1,50 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.four-o-four span {
+  font-family: arial;
+  font-weight: 800 !important;
+  font-size: 200px !important;
+}
+/* .fof-text{
+  position: absolute;
+  bottom: 2rem;;
+} */
+.fof-text span {
+  background: #1e1e1e;
+  color: white;
+  padding: 0.3rem 0.5rem;
+}
+.page-404 {
+  min-height: 100vh;
+  width: 100%;
+  background: #00a058;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* .four-o-four{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+} */
+
+/* .four-o-four span:nth-child(3){
+  width: 45%;
+    transform: translateY(6rem);
+}
+.four-o-four span:nth-child(2){
+  width:10%;
+  text-align: center;
+  transform: translateY(3rem);
+}
+.four-o-four span:nth-child(1){
+  width: 45%;
+  text-align:right;
+  background: black;
+  color: yellow;
+} */

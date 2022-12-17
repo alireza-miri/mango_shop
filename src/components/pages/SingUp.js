@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import {
   Col,
@@ -10,9 +9,11 @@ import {
   Navbar,
   Nav,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
-import Login from "./Login";
+import { toast } from "react-toastify";
+import { sendSingUp } from "../../redux/action";
 
 const SingUp = () => {
   const [username, setUserName] = useState("");
@@ -20,33 +21,16 @@ const SingUp = () => {
   const [password, setPassword] = useState("");
   const [chekpas, setChekPas] = useState("");
   const [number, setNumber] = useState("");
-  const [resolve, setResolve] = useState({});
+
   const [usertouch, setUserTouch] = useState(false);
   const [emailtouch, setEmailTouch] = useState(false);
   const [passwordtouch, setPasswordTouch] = useState(false);
   const [confirmPasswordtouch, setConfirmPasswordTouch] = useState(false);
   const [mobiletouch, setMobileTouch] = useState(false);
+  const [confrimps, setConfirmPs] = useState(false);
 
-  const req = async () => {
-    try {
-      const { data } = await axios.post(
-        "http://kzico.runflare.run/user/signup",
-        {
-          username: `${username}`,
-          email: `${email}`,
-          password: `${password}`,
-          mobile: `${chekpas}`,
-        }
-      );
-
-      console.log(data);
-    } catch (error) {
-      console.log(error.response.data);
-      const answer = error.response.data;
-      setResolve(JSON.parse(JSON.stringify(answer)));
-      console.log(resolve);
-    }
-  };
+  const { data, error } = useSelector((state) => state.singup);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
     <div>
@@ -67,9 +51,21 @@ const SingUp = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Mango
+                    Sign up
                   </Navbar.Brand>
-                  <p className=" mb-5">Please enter your login and password!</p>
+                  {data.map((item) => {
+                    return (
+                      <p
+                        style={{
+                          color: "#018383",
+                          fontWeight: "bold",
+                          fontSize: "30px",
+                        }}
+                      >
+                        Now you can login
+                      </p>
+                    );
+                  })}
                   <div className="mb-3">
                     <Form>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -96,7 +92,7 @@ const SingUp = () => {
                         </Form.Label>
                         <Form.Control
                           type="email"
-                          placeholder="Enter email"
+                          placeholder=" @email"
                           onBlur={(e) => {
                             setEmail(e.target.value);
                             setEmailTouch(true);
@@ -117,7 +113,7 @@ const SingUp = () => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                           type="password"
-                          placeholder="Password"
+                          placeholder="#Aa123456"
                           onBlur={(e) => {
                             setPassword(e.target.value);
                             setPasswordTouch(true);
@@ -159,7 +155,7 @@ const SingUp = () => {
                         <Form.Label>phone Number</Form.Label>
                         <Form.Control
                           type="number"
-                          placeholder="phone number"
+                          placeholder="09*********"
                           onBlur={(e) => {
                             setNumber(e.target.value);
                             setMobileTouch(true);
@@ -177,9 +173,43 @@ const SingUp = () => {
                       >
                         <p className="small"></p>
                       </Form.Group>
-                      {!resolve.success && (<p>{resolve.message}</p>)}
+
+                      {error.length
+                        ? error.map((item, index) => {
+                            return (
+                              <p key={index}>
+                                {!item.message ? (
+                                  <p
+                                    style={{ fontWeight: "bold", color: "red" }}
+                                  >
+                                    pleas fill the filds
+                                  </p>
+                                ) : (
+                                  <p
+                                    style={{ fontWeight: "bold", color: "red" }}
+                                  >
+                                    {item.message}
+                                  </p>
+                                )}
+                              </p>
+                            );
+                          })
+                        : ""}
                       <div className="d-grid">
-                        <Button variant="success" type="button" onClick={req}>
+                        <Button
+                          variant="success"
+                          type="button"
+                          onClick={() =>
+                            username.length >= 5 &&
+                            email.length &&
+                            password.length >= 7 &&
+                            chekpas.length === password.length &&
+                            // number.length === 11 &&
+                            dispatch(
+                              sendSingUp(username, email, password, number)
+                            )
+                          }
+                        >
                           Sign Up
                         </Button>
                       </div>

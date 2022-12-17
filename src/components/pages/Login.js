@@ -1,5 +1,3 @@
-import { data } from "autoprefixer";
-import axios from "axios";
 import React, { useState } from "react";
 import {
   Col,
@@ -11,7 +9,11 @@ import {
   Navbar,
   Nav,
 } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+import "react-toastify/dist/ReactToastify.css";
+import { sendLogin } from "../../redux/action";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -19,25 +21,10 @@ const Login = () => {
   const [usertouch, setUserTouch] = useState(false);
   const [username, setUserName] = useState("");
   const [passwordtouch, setPasswordTouch] = useState(false);
-  const [resolve, setResolve] = useState({});
-  const req = async () => {
-    try {
-      const { data } = await axios.post(
-        "http://kzico.runflare.run/user/login",
-        {
-          email: `${username}`,
-          password: `${password}`,
-        }
-      );
+  const { data, error } = useSelector((state) => state.login);
+  const token = useSelector((state) => state.token);
+  const dispatch = useDispatch();
 
-      console.log(data);
-    } catch (error) {
-      const answer = error.response.data;
-      setResolve(JSON.parse(JSON.stringify(answer)));
-      console.log(answer);
-      
-    }
-  };
   return (
     <div>
       <Container>
@@ -57,9 +44,11 @@ const Login = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Mango
+                    Login
                   </Navbar.Brand>
-                  <p className=" mb-5">Please enter your login and password!</p>
+                  <p className=" mb-5 pt-3">
+                    Please enter your login and password!
+                  </p>
                   <div className="mb-3">
                     <Form>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -68,7 +57,7 @@ const Login = () => {
                         </Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder=" Email / Username"
+                          placeholder=" @Email / Username"
                           onBlur={(e) => {
                             setUserName(e.target.value);
                             setUserTouch(true);
@@ -88,7 +77,7 @@ const Login = () => {
                         <Form.Label>Password</Form.Label>
                         <Form.Control
                           type="password"
-                          placeholder="Password"
+                          placeholder="#Aa123456"
                           onBlur={(e) => {
                             setPassword(e.target.value);
                             setPasswordTouch(true);
@@ -109,14 +98,54 @@ const Login = () => {
                         controlId="formBasicCheckbox"
                       >
                         <p className="small">
-                          <a className="text-primary " onClick={()=>navigate("/settings/Changepassword")} style={{cursor:"pointer"}}>
+                          <a
+                            className="text-primary "
+                            onClick={() => navigate("/settings/Changepassword")}
+                            style={{ cursor: "pointer" }}
+                          >
                             Forgot password?
                           </a>
                         </p>
                       </Form.Group>
-                      {!resolve.success && (<p style={{fontWeight:"bold"}}>fild khaliye</p>)}
+
                       <div className="d-grid">
-                        <Button variant="success" type="button" onClick={req}>
+                        {error.length
+                          ? error.map((item, index) => {
+                              return (
+                                <p key={index}>
+                                  {item.message === "4 errors occurred" ||
+                                  item.message === "2 errors occurred" ? (
+                                    <p
+                                      style={{
+                                        fontWeight: "bold",
+                                        color: "red",
+                                      }}
+                                    >
+                                      pleas fill the filds
+                                    </p>
+                                  ) : (
+                                    <p
+                                      style={{
+                                        fontWeight: "bold",
+                                        color: "red",
+                                      }}
+                                    >
+                                      {item.message}
+                                    </p>
+                                  )}
+                                </p>
+                              );
+                            })
+                          : ""}
+                        <Button
+                          variant="success"
+                          type="button"
+                          onClick={() => {
+                            username.length >= 5 &&
+                              password.length >= 7 &&
+                              dispatch(sendLogin(username, password, token));
+                          }}
+                        >
                           Login
                         </Button>
                       </div>
@@ -139,6 +168,7 @@ const Login = () => {
           </Col>
         </Row>
       </Container>
+      {data.length && data.map((item) => {})}
     </div>
   );
 };

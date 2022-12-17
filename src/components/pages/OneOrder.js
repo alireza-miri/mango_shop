@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Badge, Button, Card, Col, Row } from "react-bootstrap";
+import React from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "react-bootstrap-icons";
-
+import { getOneOrder } from "../../redux/action";
+import { useParams } from "react-router-dom";
 import {
   MDBBtn,
   MDBCard,
@@ -16,42 +15,19 @@ import {
   MDBRow,
   MDBTypography,
 } from "mdb-react-ui-kit";
-import { plusQty, minusQty, removeItemm } from "../../redux/action";
-
-const Cart = () => {
-  const navigate = useNavigate();
+import { Badge } from "react-bootstrap";
+const OneOrder = () => {
   const dispatch = useDispatch();
-  let product = JSON.parse(localStorage.getItem("product"));
-  const login = useSelector((state) => state.chekLogin);
-  const [productList, setProductList] = useState(product);
 
-  let totalPrice = 0;
-
-  function handleUpdateQty(id) {
-    dispatch(plusQty(id));
-    setProductList(JSON.parse(localStorage.getItem("product")));
-  }
-  function removeItem(id) {
-    dispatch(removeItemm(id));
-    setProductList(JSON.parse(localStorage.getItem("product")));
-  }
-  function handleminusQty(id) {
-    dispatch(minusQty(id));
-    setProductList(JSON.parse(localStorage.getItem("product")));
-  }
-  productList.forEach((item) => {
-    totalPrice += item.price * item.qty;
-  });
-  localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
-  const newArray = [];
-  productList.forEach((item) => {
-    newArray.push({ product: item._id, qty: item.qty });
-  });
-  localStorage.setItem("orderItems", JSON.stringify(newArray));
+  const { orderId } = useParams();
+  const { loading, data, error } = useSelector((state) => state.OneOrder);
+  useEffect(() => {
+    dispatch(getOneOrder(orderId));
+  }, []);
   return (
     <div>
-      {productList.length ? (
-        productList.map((item) => {
+      {data.map((item) => {
+        return item.orderItems.map((item) => {
           return (
             <section className="h-100 " key={item._id}>
               <MDBContainer className=" pt-4 h-100">
@@ -69,56 +45,20 @@ const Cart = () => {
                             />
                           </MDBCol>
                           <MDBCol md="3" lg="3" xl="3">
-                            <p className="lead fw-normal mb-2">{item.name}</p>
+                            <p className="lead fw-normal mb-2">
+                              {item.product.name}
+                            </p>
                           </MDBCol>
 
                           <MDBCol md="3" lg="2" xl="2" className="offset-lg-1">
                             <MDBTypography tag="h5" className="mb-0">
-                              ${item.price}
+                              ${item.product.price}
                             </MDBTypography>
                           </MDBCol>
-                          <MDBCol
-                            md="3"
-                            lg="3"
-                            xl="2"
-                            className="d-flex align-items-center justify-content-around"
-                          >
-                            <Button
-                              className="justify-content-center align-items-center "
-                              bg="primary"
-                              size="md"
-                              onClick={() => handleminusQty(item._id)}
-                            >
-                              -
-                            </Button>
-                            <MDBInput
-                              min={1}
-                              max={item.countInStock}
-                              value={item.qty}
-                              type="number"
-                              size="md"
-                              style={{ width: "5rem", height: "3rem" }}
-                            />
-                            <Button
-                              className="justify-content-center align-items-center  "
-                              bg="primary"
-                              size="md"
-                              onClick={() => handleUpdateQty(item._id)}
-                            >
-                              +
-                            </Button>
-                          </MDBCol>
-
-                          <MDBCol md="1" lg="1" xl="1" className="text-end">
-                            <a
-                              href="#!"
-                              className="text-danger"
-                              onClick={() => {
-                                removeItem(item._id);
-                              }}
-                            >
-                              <MDBIcon fas icon="trash text-danger" size="lg" />
-                            </a>
+                          <MDBCol md="3" lg="2" xl="2" className="offset-lg-1">
+                            <MDBTypography tag="h5" className="mb-0">
+                              count: {item.qty}
+                            </MDBTypography>
                           </MDBCol>
                         </MDBRow>
                       </MDBCardBody>
@@ -128,35 +68,25 @@ const Cart = () => {
               </MDBContainer>
             </section>
           );
-        })
-      ) : (
-        <h1>empty</h1>
-      )}
+        });
+      })}
       <div className="d-flex justify-content-around">
-        <Badge
-          pill
-          bg="primary"
-          className="justify-content-center align-items-center h-100"
-          style={{ fontSize: "1rem" }}
-        >
-          {" "}
-          totalPrice: ${JSON.parse(localStorage.getItem("totalPrice"))}
-        </Badge>
-        <MDBBtn
-          color="success"
-          block
-          size="lg"
-          className="m-3"
-          onClick={() => (login ? navigate("/address") : navigate("*"))}
-        >
-          <span>
-            next
-            <i className="fas fa-long-arrow-alt-right ms-2"></i>
-          </span>
-        </MDBBtn>
+        {data.map((item) => {
+          return (
+            <Badge
+              pill
+              bg="primary"
+              className="justify-content-center align-items-center h-100"
+              style={{ fontSize: "1rem" }}
+            >
+              {" "}
+              totalPrice: ${item.totalPrice}
+            </Badge>
+          );
+        })}
       </div>
     </div>
   );
 };
 
-export default Cart;
+export default OneOrder;
