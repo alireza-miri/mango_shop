@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts, getProfile } from "../../redux/action";
+import { getPosts } from "../../redux/action";
 import { useNavigate } from "react-router-dom";
 import "./style.css";
 

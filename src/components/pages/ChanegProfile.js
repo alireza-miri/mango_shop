@@ -180,8 +180,9 @@ const ChangeProfile = () => {
                         <Button
                           variant="success"
                           type="button"
-                          onClick={() =>
-                            {dispatch(
+                          onClick={() => {
+                            setIsClicked(true)
+                            dispatch(
                               changeprofile(
                                 firstName,
                                 lastName,
@@ -189,8 +190,12 @@ const ChangeProfile = () => {
                                 city,
                                 age
                               )
-                            );  localStorage.setItem("chProfile",JSON.stringify(true))}
-                          }
+                            );
+                            localStorage.setItem(
+                              "chProfile",
+                              JSON.stringify(true)
+                            );
+                          }}
                         >
                           done
                         </Button>

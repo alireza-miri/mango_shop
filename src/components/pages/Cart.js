@@ -40,18 +40,20 @@ const Cart = () => {
     dispatch(minusQty(id));
     setProductList(JSON.parse(localStorage.getItem("product")));
   }
-  productList.forEach((item) => {
+  productList &&productList.forEach((item) => {
     totalPrice += item.price * item.qty;
   });
   localStorage.setItem("totalPrice", JSON.stringify(totalPrice));
   const newArray = [];
-  productList.forEach((item) => {
-    newArray.push({ product: item._id, qty: item.qty });
-  });
+  productList &&productList.forEach((item) => {
+      newArray.push({ product: item._id, qty: item.qty });
+    })
+    
   localStorage.setItem("orderItems", JSON.stringify(newArray));
+  
   return (
     <div>
-      {productList.length ? (
+      {productList ? (
         productList.map((item) => {
           return (
             <section className="h-100 " key={item._id}>
@@ -148,20 +150,22 @@ const Cart = () => {
           block
           size="lg"
           className="m-3"
-          onClick={() => (login ? productList.length&&navigate("/address") : Swal.fire({
-            title: "pleas login",
-            icon: "error",
-            showConfirmButton: false,
-            showClass: {
-              popup:
-                "animate__animated animate__fadeInDown",
-            },
-            hideClass: {
-              popup:
-                "animate__animated animate__fadeOutUp",
-            },
-            timer: 1500,
-          }))}
+          onClick={() =>
+            login
+              ? productList && navigate("/address")
+              : Swal.fire({
+                  title: "pleas login",
+                  icon: "error",
+                  showConfirmButton: false,
+                  showClass: {
+                    popup: "animate__animated animate__fadeInDown",
+                  },
+                  hideClass: {
+                    popup: "animate__animated animate__fadeOutUp",
+                  },
+                  timer: 1500,
+                })
+          }
         >
           <span>
             next

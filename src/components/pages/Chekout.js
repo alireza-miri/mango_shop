@@ -14,20 +14,19 @@ import {
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { senAddress } from "../../redux/action";
 const Chekout = () => {
   const totalPrice = JSON.parse(localStorage.getItem("totalPrice"));
-  const chek = JSON.parse(localStorage.getItem("checkOut"));
-  const [checkout, setCheckUot] = useState(chek);
-  useEffect(() => {
-    setCheckUot(JSON.parse(localStorage.getItem("checkOut")));
-  }, [chek]);
+  const cart = JSON.parse(localStorage.getItem("product"));
 
+
+  const x =  useSelector(response=>response.address)
   const navigate = useNavigate();
-
+const dispatch=useDispatch()
   return (
     <div>
-      {checkout.orderItems.map((item) => {
+      {cart&&cart.map((item) => {
         return (
           <section className="h-100 ">
             <MDBContainer className=" pt-4 h-100">
@@ -46,17 +45,17 @@ const Chekout = () => {
                         </MDBCol>
                         <MDBCol md="2" lg="2" xl="2">
                           <p className="lead fw-normal mb-2">
-                            {item.product.name}
+                            {item.name}
                           </p>
                         </MDBCol>
                         <MDBCol md="2" lg="2" xl="2">
                           <p className="lead fw-normal mb-2">
-                            {item.product.color}
+                            {item.color}
                           </p>
                         </MDBCol>
                         <MDBCol md="2" lg="2" xl="2">
                           <p className="lead fw-normal mb-2">
-                            ${item.product.price}
+                            ${item.price}
                           </p>
                         </MDBCol>
                         <MDBCol md="2" lg="2" xl="2">
@@ -115,8 +114,9 @@ const Chekout = () => {
                       size="lg"
                       className="m-3"
                       onClick={() => {
-                        navigate("/");
+                        dispatch(senAddress(x.city, x.address, x.postal, x.number));
                         localStorage.removeItem("product");
+                        navigate("/orders");
                       }}
                     >
                       <span>${totalPrice}</span>

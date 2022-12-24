@@ -60,9 +60,9 @@ const Changepassword = () => {
                           onBlur={(e) => {setOldPas(e.target.value);setOldPasswordTuched(true)}}
                         />
                             {!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
-                newPas
+                oldPas
               ) &&
-                newPasswordTuched && (
+                oldPasswordTuched && (
                   <span style={{ color: "red" }}>
                     password must be at least 1 specilal chracter and 1 capital
                     chracter 1 lower chracter and 4 number
@@ -96,24 +96,23 @@ const Changepassword = () => {
                       >
                         <p className="small"></p>
                       </Form.Group>
-                      {isClicked &&
-              !oldPas&&
-              !newPas? <p style={{ color: "red" }}>
-             please fill the filds
-            </p>:isClicked&&
-                error?.map((item) => {
-                  return (
-                    <p key={item.message} style={{ color: "red" }}>
-                      {item.message}
-                    </p>
-                  );
-                })}
-                      <div className="d-grid">
+                      {isClicked && !oldPas && !newPas ? (
+                <p style={{ color: "red" }}>please fill the filds</p>
+              ) : isClicked ? (
+                error[0]?.message.length > 0 && (
+                  <p style={{ color: "red" }}>{error[0].message}</p>
+                )
+              ) : (
+                ""
+              )}
+         
+                      <div className="d-grid"> 
                         <Button
                           variant="success"
                           type="button"
-                          onClick={() =>
-                            dispatch(changePaswword(oldPas, newPas))
+                          onClick={() =>{
+                            setIsClicked(true)
+                            dispatch(changePaswword(oldPas, newPas))}
                           }
                         >
                           done

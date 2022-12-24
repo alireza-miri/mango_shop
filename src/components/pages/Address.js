@@ -11,7 +11,7 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { senAddress } from "../../redux/action";
+import { AddressAction, senAddress } from "../../redux/action";
 const Address = () => {
   const navigate = useNavigate();
   const [address, setAddress] = useState("");
@@ -23,8 +23,7 @@ const Address = () => {
   const [postalCodetouch, setPostalCodeTouch] = useState(false);
   const [phoneNumbertouch, setphoneNumberTouch] = useState(false);
   const dispatch = useDispatch();
-  const { data, error } = useSelector((state) => state.sendAddress);
-
+  const [clicked, setClicked] = useState(false);
   return (
     <div>
       <Container>
@@ -91,7 +90,7 @@ const Address = () => {
                           placeholder="postal code"
                           onBlur={(e) => {
                             setPostalCode(e.target.value);
-                            setPostalCode(true);
+                            setPostalCodeTouch(true);
                           }}
                         />
                       </Form.Group>
@@ -110,8 +109,14 @@ const Address = () => {
                           placeholder="phone number"
                           onBlur={(e) => {
                             setPhoneNumer(e.target.value);
+                            setphoneNumberTouch(true)
                           }}
                         />
+                          { !/^(09)[\d]/.test(phoneNumer) && phoneNumbertouch && (
+                        <span style={{ fontWeight: "bold", color: "red" }}>
+                          postalCode must be at least 10 characters
+                          </span>
+                      )}
                       </Form.Group>
 
                       <Form.Group
@@ -120,21 +125,34 @@ const Address = () => {
                       >
                         <p className="small"></p>
                       </Form.Group>
-
+                      {clicked&&!address&&!city&&!postalCode&&!phoneNumer&& <p style={{ color: "red" }}>please fill the filds</p>}
                       <div className="d-grid">
+                        
                         <Button
                           variant="success"
                           type="button"
                           onClick={() => {
+                            setClicked(true)
+                            if (
+                              city.length >= 2 &&
+                              address.length >= 10 &&
+                              postalCode.length >= 8 &&
+                              /^(09)[\d]/.test(phoneNumer)
+                            ) {
+                              dispatch(AddressAction(address,city,postalCode,phoneNumer))
+                              navigate("/chekout");
+                            } else {
+                              navigate("/address");
+                            }
                             // city.length >= 2 &&
                             //   address.length >= 9 &&
                             //   postalCode.length >= 7 &&
 
-                            navigate("/chekout");
-                            window.location.reload();
-                            dispatch(
-                              senAddress(address, city, postalCode, phoneNumer)
-                            );
+                            // navigate("/chekout");
+                            // window.location.reload();
+                            // dispatch(
+                            //   senAddress(address, city, postalCode, phoneNumer)
+                            // );
                           }}
                         >
                           Next

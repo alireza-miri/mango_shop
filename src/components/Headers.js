@@ -150,6 +150,7 @@ const Headers = () => {
                                     localStorage.removeItem("token");
                                     localStorage.setItem("login",JSON.stringify(false));
                                     localStorage.removeItem("user");
+                                    localStorage.removeItem("product");
                                     window.location.reload();
                                   }}
                                 >

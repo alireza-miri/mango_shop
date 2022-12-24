@@ -98,8 +98,8 @@ export const sendLogin = (username, password) => async (dispatch, getState) => {
       type: "checkLogin",
       payload: data.success,
     });
-    localStorage.setItem("token", getState().token);
-    localStorage.setItem("login", getState().chekLogin);
+    localStorage.setItem("token", JSON.stringify(getState().token));
+    localStorage.setItem("login", JSON.stringify(getState().chekLogin));
   } catch (error) {
     const answer = error.response.data;
     dispatch({
@@ -231,7 +231,7 @@ export const uploadavatar = (img) => async (dispatch, getState) => {
   }
 };
 export const senAddress =
-  (address, city, postalCode, phoneNumer) => async (dispatch, getState) => {
+  (city,address,postal,number) => async (dispatch, getState) => {
     const getOrderItems = JSON.parse(localStorage.getItem("orderItems"));
     try {
       const { data } = await axios.post(
@@ -241,8 +241,8 @@ export const senAddress =
           shippingAddress: {
             address: `${address}`,
             city: `${city}`,
-            postalCode: `${postalCode}`,
-            phone: `${phoneNumer}`,
+            postalCode: `${postal}`,
+            phone: `${number}`,
           },
           paymentMethod: "cash",
           shippingPrice: "5",
@@ -268,6 +268,10 @@ export const senAddress =
     }
   };
 export const AllOrder = () => async (dispatch, getState) => {
+  dispatch({
+    type: loading,
+    payload: { data: [], error: [],loading:true },
+  });
   try {
     const { data } = await axios.get("http://kzico.runflare.run/order/", {
       headers: {
@@ -276,13 +280,13 @@ export const AllOrder = () => async (dispatch, getState) => {
     });
     dispatch({
       type: success,
-      payload: { data: [...data], error: [] },
+      payload: { data: [...data], error: [],loading:false },
     });
   } catch (error) {
     const answer = error.response.data;
     dispatch({
       type: failed,
-      payload: { data: [], error: [answer] },
+      payload: { data: [], error: [answer],loading:false },
     });
   }
 };
@@ -308,3 +312,8 @@ export const getOneOrder = (orderId) => async (dispatch, getState) => {
     });
   }
 };
+export const AddressAction = (address,city,postal,number) =>  (dispatch, getState) => {
+  dispatch({type:"submitAddress",
+ payload:{city:city,postal:postal,number:number,address:address}})
+  
+ };

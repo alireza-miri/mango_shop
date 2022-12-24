@@ -15,7 +15,7 @@ import {
   MDBIcon,
   MDBBtn,
 } from "mdb-react-ui-kit";
-import { Badge } from "react-bootstrap";
+import { Badge, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 const Orders = () => {
   const navigate = useNavigate();
@@ -27,7 +27,9 @@ const Orders = () => {
   }, []);
   return (
     <div>
-      {data.map((item) => {
+       {loading ? (
+          <Spinner animation="border" variant="info" />
+        ) :data?.map((item) => {
         return (
           <section className="mt-5">
             <MDBContainer className="py-5 h-100">
@@ -40,7 +42,7 @@ const Orders = () => {
                       backgroundColor: "#f4f5f7",
                     }}
                   >
-                    {item.orderItems.map((item) => {
+                    {item.orderItems?.map((item) => {
                       return (
                         <MDBRow className="g-0">
                           <MDBCol

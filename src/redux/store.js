@@ -20,6 +20,7 @@ import {
   sendAddress,
   orders,
   OneOrder,
+  address
 } from "./reducer";
 const reducers = combineReducers({
   posts,
@@ -37,10 +38,11 @@ const reducers = combineReducers({
   sendAddress,
   orders,
   OneOrder,
+  address
 });
 const middleWare = [thunk];
-const userToken = localStorage.getItem("token");
-const userLogin = localStorage.getItem("login");
+const userToken = JSON.parse(localStorage.getItem("token"));
+const userLogin = JSON.parse(localStorage.getItem("login"));
 const OneProduct = JSON.parse(localStorage.getItem("product"));
 const user = JSON.parse(localStorage.getItem("getUser"));
 const initialState = {
