@@ -23,7 +23,12 @@ const Profile = () => {
   const gender = useSelector((state) => state.getUser?.gender);
   const userName = useSelector((state) => state.getUser?.username);
   const img = JSON.parse(localStorage.getItem("user"))?.image;
-
+  const chProfile=JSON.parse(localStorage.getItem("chProfile"))
+  if (chProfile===true) {
+    window.location.reload() 
+    localStorage.setItem("chProfile",JSON.stringify(false))
+    
+  }
   return (
     <div>
       <section className="mt-5">

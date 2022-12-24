@@ -15,8 +15,10 @@ import Saidbar from "./Saidbar";
 const Changepassword = () => {
   const [oldPas, setOldPas] = useState("");
   const [newPas, setNewPas] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordtouch, setPasswordTouch] = useState(false);
+  const [oldPasswordTuched, setOldPasswordTuched] = useState(false);
+  const [newPasswordTuched, setNewPasswordTuched] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data, error } = useSelector((state) => state.Changepassword);
@@ -55,8 +57,17 @@ const Changepassword = () => {
                         <Form.Control
                           type="password"
                           placeholder=" Old password"
-                          onBlur={(e) => setOldPas(e.target.value)}
+                          onBlur={(e) => {setOldPas(e.target.value);setOldPasswordTuched(true)}}
                         />
+                            {!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+                newPas
+              ) &&
+                newPasswordTuched && (
+                  <span style={{ color: "red" }}>
+                    password must be at least 1 specilal chracter and 1 capital
+                    chracter 1 lower chracter and 4 number
+                  </span>
+                )}
                       </Form.Group>
 
                       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -66,8 +77,17 @@ const Changepassword = () => {
                         <Form.Control
                           type="password"
                           placeholder="New password"
-                          onBlur={(e) => setNewPas(e.target.value)}
+                          onBlur={(e) => {setNewPas(e.target.value);setNewPasswordTuched(true)}}
                         />
+                            {!/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+                newPas
+              ) &&
+                newPasswordTuched && (
+                  <span style={{ color: "red" }}>
+                    password must be at least 1 specilal chracter and 1 capital
+                    chracter 1 lower chracter and 4 number
+                  </span>
+                )}
                       </Form.Group>
 
                       <Form.Group
@@ -76,16 +96,18 @@ const Changepassword = () => {
                       >
                         <p className="small"></p>
                       </Form.Group>
-                      {error.map((item) => {
-                        return (
-                          <p
-                            key={item.message}
-                            style={{ color: "red", fontWeight: "bold" }}
-                          >
-                            {item.message}
-                          </p>
-                        );
-                      })}
+                      {isClicked &&
+              !oldPas&&
+              !newPas? <p style={{ color: "red" }}>
+             please fill the filds
+            </p>:isClicked&&
+                error?.map((item) => {
+                  return (
+                    <p key={item.message} style={{ color: "red" }}>
+                      {item.message}
+                    </p>
+                  );
+                })}
                       <div className="d-grid">
                         <Button
                           variant="success"

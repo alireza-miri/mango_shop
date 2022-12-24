@@ -70,7 +70,11 @@ const UploadAvatar = () => {
                           variant="success"
                           type="button"
                           className="mt-3"
-                          onClick={() => dispatch(uploadavatar(img))}
+                          onClick={() => {dispatch(uploadavatar(img));
+                            setTimeout(() => {
+                      
+                              !error.length&&    window.location.reload()
+                            },2000)}}
                         >
                           Upload
                         </Button>

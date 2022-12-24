@@ -16,10 +16,16 @@ import Saidbar from "./Saidbar";
 const ChangeProfile = () => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
-  const [lastNam, setLastName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
   const [age, setAge] = useState("");
+  const [firstNameOnBelour, setFirstNameOnBelour] = useState(false);
+  const [lastNameOnBelour, setLastNameOnBelour] = useState(false);
+  const [ageOnBelour, setAgeOnBelour] = useState(false);
+  const [cityOnBelour, setCityOnBelour] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+
   const dispatch = useDispatch();
   const { data, error } = useSelector((state) => state.changeprofile);
   return (
@@ -57,8 +63,16 @@ const ChangeProfile = () => {
                         <Form.Control
                           type="text"
                           placeholder="first name"
-                          onChange={(e) => setFirstName(e.target.value)}
+                          onBlur={(e) => {
+                            setFirstName(e.target.value);
+                            setFirstNameOnBelour(true);
+                          }}
                         />
+                        {firstNameOnBelour && firstName.length < 3 && (
+                          <p style={{ color: "red" }}>
+                            firstname must be at least 3 characters
+                          </p>
+                        )}
                       </Form.Group>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label className="text-center">
@@ -67,8 +81,16 @@ const ChangeProfile = () => {
                         <Form.Control
                           type="text"
                           placeholder="last name"
-                          onChange={(e) => setLastName(e.target.value)}
+                          onBlur={(e) => {
+                            setLastName(e.target.value);
+                            setLastNameOnBelour(true);
+                          }}
                         />
+                        {lastNameOnBelour && lastName.length < 3 && (
+                          <p style={{ color: "red" }}>
+                            lastName must be at least 3 characters
+                          </p>
+                        )}
                       </Form.Group>
 
                       <Form.Group
@@ -83,8 +105,16 @@ const ChangeProfile = () => {
                           <Form.Control
                             type="number"
                             placeholder="age"
-                            onChange={(e) => setAge(e.target.value)}
+                            onBlur={(e) => {
+                              setAge(e.target.value);
+                              setAgeOnBelour(true);
+                            }}
                           />
+                          {ageOnBelour && age < 15 && (
+                            <p style={{ color: "red" }}>
+                              age must be greater than or equal to 15
+                            </p>
+                          )}
                         </Form.Group>
                         <Form.Group
                           className="mb-3"
@@ -94,8 +124,16 @@ const ChangeProfile = () => {
                           <Form.Control
                             type="text"
                             placeholder="city"
-                            onChange={(e) => setCity(e.target.value)}
+                            onBlur={(e) => {
+                              setCity(e.target.value);
+                              setCityOnBelour(true);
+                            }}
                           />
+                          {cityOnBelour && city.length < 3 && (
+                            <p style={{ color: "red" }}>
+                              city must be at least 3 characters
+                            </p>
+                          )}
                         </Form.Group>
                         <Form.Group
                           className="mb-3"
@@ -112,7 +150,7 @@ const ChangeProfile = () => {
                               name="group1"
                               type={type}
                               id={`inline-${type}-1`}
-                              onClick={() => setGender("female")}
+                              onBlur={() => setGender("female")}
                             />
                             <Form.Check
                               inline
@@ -120,35 +158,38 @@ const ChangeProfile = () => {
                               name="group1"
                               type={type}
                               id={`inline-${type}-2`}
-                              onClick={() => setGender("male")}
+                              onBlur={() => setGender("male")}
                             />
                           </Form>
                         ))}
                       </Form.Group>
-                      {error.map((item) => {
-                        return (
-                          <p
-                            key={item.message}
-                            style={{ color: "red", fontWeight: "bold" }}
-                          >
-                            {item.message}
-                          </p>
-                        );
-                      })}
+                      {isClicked && !firstName && !lastName && !age && !city ? (
+                        <p style={{ color: "red" }}>please fill the filds</p>
+                      ) : error ? (
+                        error.map((item) => {
+                          return (
+                            <p key={item.message} style={{ color: "red" }}>
+                              {item.message}
+                            </p>
+                          );
+                        })
+                      ) : (
+                        ""
+                      )}
                       <div className="d-grid">
                         <Button
                           variant="success"
                           type="button"
                           onClick={() =>
-                            dispatch(
+                            {dispatch(
                               changeprofile(
                                 firstName,
-                                lastNam,
+                                lastName,
                                 gender,
                                 city,
                                 age
                               )
-                            )
+                            );  localStorage.setItem("chProfile",JSON.stringify(true))}
                           }
                         >
                           done

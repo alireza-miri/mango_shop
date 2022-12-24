@@ -17,6 +17,7 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 import { plusQty, minusQty, removeItemm } from "../../redux/action";
+import Swal from "sweetalert2";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -147,7 +148,20 @@ const Cart = () => {
           block
           size="lg"
           className="m-3"
-          onClick={() => (login ? navigate("/address") : navigate("*"))}
+          onClick={() => (login ? productList.length&&navigate("/address") : Swal.fire({
+            title: "pleas login",
+            icon: "error",
+            showConfirmButton: false,
+            showClass: {
+              popup:
+                "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup:
+                "animate__animated animate__fadeOutUp",
+            },
+            timer: 1500,
+          }))}
         >
           <span>
             next

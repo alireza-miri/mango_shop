@@ -176,13 +176,13 @@ export const changePaswword =
   };
 
 export const changeprofile =
-  (firstName, lastNam, gender, city, age) => async (dispatch, getState) => {
+  (firstName, lastName, gender, city, age) => async (dispatch, getState) => {
     try {
       const { data } = await axios.put(
         "http://kzico.runflare.run/user/change-profile",
         {
           firstname: `${firstName}`,
-          lastname: `${lastNam}`,
+          lastname: `${lastName}`,
           gender: `${gender}`,
           age: `${age}`,
           city: `${city}`,

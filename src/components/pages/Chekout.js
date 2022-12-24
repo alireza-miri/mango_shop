@@ -116,6 +116,7 @@ const Chekout = () => {
                       className="m-3"
                       onClick={() => {
                         navigate("/");
+                        localStorage.removeItem("product");
                       }}
                     >
                       <span>${totalPrice}</span>

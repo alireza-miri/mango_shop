@@ -148,7 +148,7 @@ const Headers = () => {
                                 <Dropdown.Item
                                   onClick={() => {
                                     localStorage.removeItem("token");
-                                    localStorage.removeItem("login");
+                                    localStorage.setItem("login",JSON.stringify(false));
                                     localStorage.removeItem("user");
                                     window.location.reload();
                                   }}
