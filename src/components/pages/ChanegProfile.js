@@ -165,17 +165,7 @@ const ChangeProfile = () => {
                       </Form.Group>
                       {isClicked && !firstName && !lastName && !age && !city ? (
                         <p style={{ color: "red" }}>please fill the filds</p>
-                      ) : error ? (
-                        error.map((item) => {
-                          return (
-                            <p key={item.message} style={{ color: "red" }}>
-                              {item.message}
-                            </p>
-                          );
-                        })
-                      ) : (
-                        ""
-                      )}
+                      ) : "" }
                       <div className="d-grid">
                         <Button
                           variant="success"
@@ -195,6 +185,10 @@ const ChangeProfile = () => {
                               "chProfile",
                               JSON.stringify(true)
                             );
+                            setTimeout(() => {
+                      
+                                  window.location.reload()
+                            },1500)
                           }}
                         >
                           done

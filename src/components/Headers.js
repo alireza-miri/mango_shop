@@ -21,7 +21,7 @@ const Headers = () => {
   const login = useSelector((state) => state.chekLogin);
   const email = useSelector((state) => state.getUser?.email);
   const product = JSON.parse(localStorage.getItem("product"));
-
+ 
   const img = JSON.parse(localStorage.getItem("user"))?.image;
 
   const dispatch = useDispatch();

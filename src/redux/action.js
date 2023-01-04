@@ -145,7 +145,17 @@ export const getProfile = () => async (dispatch, getState) => {
       payload: data.user,
     });
     localStorage.setItem("user", JSON.stringify(getState().getUser));
-  } catch (error) {}
+  } catch (error) {
+    dispatch({
+      type: failed,
+      payload: { data: [], error: [error.response.data] },
+    });
+    localStorage.removeItem("token");
+    localStorage.setItem("login",JSON.stringify(false));
+    localStorage.removeItem("user");
+    localStorage.removeItem("product");
+   
+  }
 };
 export const changePaswword =
   (oldPas, newPas) => async (dispatch, getState) => {
@@ -231,7 +241,7 @@ export const uploadavatar = (img) => async (dispatch, getState) => {
   }
 };
 export const senAddress =
-  (city,address,postal,number) => async (dispatch, getState) => {
+  (city, address, postal, number) => async (dispatch, getState) => {
     const getOrderItems = JSON.parse(localStorage.getItem("orderItems"));
     try {
       const { data } = await axios.post(
@@ -270,7 +280,7 @@ export const senAddress =
 export const AllOrder = () => async (dispatch, getState) => {
   dispatch({
     type: loading,
-    payload: { data: [], error: [],loading:true },
+    payload: { data: [], error: [], loading: true },
   });
   try {
     const { data } = await axios.get("http://kzico.runflare.run/order/", {
@@ -280,13 +290,13 @@ export const AllOrder = () => async (dispatch, getState) => {
     });
     dispatch({
       type: success,
-      payload: { data: [...data], error: [],loading:false },
+      payload: { data: [...data], error: [], loading: false },
     });
   } catch (error) {
     const answer = error.response.data;
     dispatch({
       type: failed,
-      payload: { data: [], error: [answer],loading:false },
+      payload: { data: [], error: [answer], loading: false },
     });
   }
 };
@@ -312,8 +322,10 @@ export const getOneOrder = (orderId) => async (dispatch, getState) => {
     });
   }
 };
-export const AddressAction = (address,city,postal,number) =>  (dispatch, getState) => {
-  dispatch({type:"submitAddress",
- payload:{city:city,postal:postal,number:number,address:address}})
-  
- };
+export const AddressAction =
+  (address, city, postal, number) => (dispatch, getState) => {
+    dispatch({
+      type: "submitAddress",
+      payload: { city: city, postal: postal, number: number, address: address },
+    });
+  };

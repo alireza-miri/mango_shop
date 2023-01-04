@@ -32,7 +32,7 @@ const Home = () => {
       ) : (
         <Container>
           <Row>
-            {data.map((item) => {
+            {data?.map((item) => {
               return (
                 <Col key={item._id}>
                   <Card

@@ -80,7 +80,8 @@ export const getUser = (state = [], { type, payload }) => {
   switch (type) {
     case "user":
       return payload;
-
+      case failed:
+        return payload;
     default:
       return state;
   }

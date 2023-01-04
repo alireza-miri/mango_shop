@@ -98,13 +98,9 @@ const Changepassword = () => {
                       </Form.Group>
                       {isClicked && !oldPas && !newPas ? (
                 <p style={{ color: "red" }}>please fill the filds</p>
-              ) : isClicked ? (
-                error[0]?.message.length > 0 && (
-                  <p style={{ color: "red" }}>{error[0].message}</p>
-                )
-              ) : (
-                ""
-              )}
+              ) :"" }
+               
+             
          
                       <div className="d-grid"> 
                         <Button
@@ -112,7 +108,11 @@ const Changepassword = () => {
                           type="button"
                           onClick={() =>{
                             setIsClicked(true)
-                            dispatch(changePaswword(oldPas, newPas))}
+                            dispatch(changePaswword(oldPas, newPas))
+                            setTimeout(() => {
+                      
+                                 window.location.reload()
+                            },1500)}
                           }
                         >
                           done
