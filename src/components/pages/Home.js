@@ -30,7 +30,7 @@ const Home = () => {
           <Badge bg="danger">{error}</Badge>
         </h1>
       ) : (
-        <Container>
+        <Container >
           <Row>
             {data?.map((item) => {
               return (
@@ -38,7 +38,7 @@ const Home = () => {
                   <Card
                     style={{ width: "18rem" }}
                     className=" hover_card mt-5 "
-                    onClick={() => navigate(`/product/${item._id}`)}
+                    onClick={() => {navigate(`/product/${item._id}`)}}
                   >
                     <Card.Img
                       variant="top"

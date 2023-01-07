@@ -148,12 +148,11 @@ export const getProfile = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: failed,
-      payload: { data: [], error: [error.response.data] },
+      payload: error.response.data ,
     });
     localStorage.removeItem("token");
     localStorage.setItem("login",JSON.stringify(false));
-    localStorage.removeItem("user");
-    localStorage.removeItem("product");
+   
    
   }
 };

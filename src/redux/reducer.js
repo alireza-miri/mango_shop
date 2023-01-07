@@ -53,8 +53,10 @@ export const profile = (state = { data: {} }, { type, payload }) => {
   switch (type) {
     case success:
       return payload;
+    case failed:
+      return payload;
 
-    default:
+    default :
       return state;
   }
 };
