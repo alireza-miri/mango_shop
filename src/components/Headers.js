@@ -41,7 +41,7 @@ const Headers = () => {
         >
           <Container fluid>
             <Navbar.Brand
-              onClick={() =>{ navigate("/");  }}
+              onClick={() =>{ navigate("/"); }}
               style={{
                 fontWeight: "bold ",
                 color: "green",

@@ -53,8 +53,7 @@ export const profile = (state = { data: {} }, { type, payload }) => {
   switch (type) {
     case success:
       return payload;
-    case failed:
-      return payload;
+    
 
     default :
       return state;
@@ -82,8 +81,7 @@ export const getUser = (state = [], { type, payload }) => {
   switch (type) {
     case "user":
       return payload;
-      case failed:
-        return payload;
+      
     default:
       return state;
   }

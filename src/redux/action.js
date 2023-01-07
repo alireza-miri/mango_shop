@@ -146,14 +146,10 @@ export const getProfile = () => async (dispatch, getState) => {
     });
     localStorage.setItem("user", JSON.stringify(getState().getUser));
   } catch (error) {
-    dispatch({
-      type: failed,
-      payload: error.response.data ,
-    });
+    dispatch({ type: "user", payload: error.response.data });
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     localStorage.setItem("login",JSON.stringify(false));
-   
-   
   }
 };
 export const changePaswword =

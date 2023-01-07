@@ -109,7 +109,7 @@ const Login = () => {
                       </Form.Group>
 
                       <div className="d-grid">
-                        {error.length
+                        {error
                           ? error.map((item, index) => {
                               return (
                                 <p key={index}>
@@ -168,7 +168,7 @@ const Login = () => {
           </Col>
         </Row>
       </Container>
-      {data.length && data.map((item) => {})}
+      
     </div>
   );
 };

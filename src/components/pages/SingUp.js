@@ -53,7 +53,7 @@ const SingUp = () => {
                   >
                     Sign up
                   </Navbar.Brand>
-                  {data.map((item) => {
+                  { data?data.map((item) => {
                     return (
                       <p
                         style={{
@@ -65,7 +65,7 @@ const SingUp = () => {
                         Now you can login
                       </p>
                     );
-                  })}
+                  }):""}
                   <div className="mb-3">
                     <Form>
                       <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -174,7 +174,7 @@ const SingUp = () => {
                         <p className="small"></p>
                       </Form.Group>
 
-                      {error.length
+                      {error
                         ? error.map((item, index) => {
                             return (
                               <p key={index}>
